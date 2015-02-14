@@ -9,17 +9,12 @@ MONGO_SETTINGS=MONGO_CONNECTION=${MONGO_CONNECTION} \
 
 all: test
 
-travis-cov:
-	NODE_ENV=test \
-	${MONGO_SETTINGS} \
-	istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -vvv -R tap ${TESTS} && \
-	cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && \
-	rm -rf ./coverage
-
+.PHONY: test
 test:
 	${MONGO_SETTINGS} \
-    mocha --verbose -vvv -R tap ${TESTS}
+	mocha --verbose -vvv -R tap ${TESTS}
 
-travis: test travis-cov
-
-.PHONY: test
+travis:
+	NODE_ENV=test \
+	${MONGO_SETTINGS} \
+	istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -vvv -R tap ${TESTS}
