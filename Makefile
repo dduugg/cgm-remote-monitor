@@ -19,13 +19,13 @@ all: test
 
 coverage:
 	NODE_ENV=test ${MONGO_SETTINGS} \
-	${ISTANBUL} cover ${MOCHA} -- -vvv -R tap ${TESTS}
+	${ISTANBUL} cover ${MOCHA} -- -R tap ${TESTS}
 
 report:
 	npm install coveralls && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 
 test:
-	${MONGO_SETTINGS} ${MOCHA} --verbose -vvv -R tap ${TESTS}
+	${MONGO_SETTINGS} ${MOCHA} -R tap ${TESTS}
 
 travis:
 	NODE_ENV=test ${MONGO_SETTINGS} \
