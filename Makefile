@@ -7,22 +7,26 @@ MONGO_SETTINGS=MONGO_CONNECTION=${MONGO_CONNECTION} \
 	CUSTOMCONNSTR_mongo_collection=${CUSTOMCONNSTR_mongo_collection} \
 	CUSTOMCONNSTR_mongo_settings_collection=${CUSTOMCONNSTR_mongo_settings_collection}
 
-MOCHA=$(shell which mocha ./node_modules/mocha/bin/_mocha)
+# XXX.bewest: Mocha is an odd process, and since things are being wrapped and
+# transformed, this odd path needs to be used, not the normal wrapper.
+# When ./node_modules/.bin/mocha is used, no coverage information is generated.
+MOCHA=$(shell which mocha ./node_modules/mocha/bin/_mocha | head -n 1)
+ISTANBUL=$(shell which istanbul ./node_modules/.bin/istanbul | head -n 1)
 
-.PHONY: all coverage test travis report
+.PHONY: all coverage report test travis
 
 all: test
 
 coverage:
 	NODE_ENV=test ${MONGO_SETTINGS} \
-	istanbul cover ${MOCHA} -- -vvv -R tap ${TESTS}
-
-test:
-	${MONGO_SETTINGS} ${MOCHA} --verbose -vvv -R tap ${TESTS}
+	${ISTANBUL} cover ${MOCHA} -- -vvv -R tap ${TESTS}
 
 report:
 	npm install coveralls && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 
+test:
+	${MONGO_SETTINGS} ${MOCHA} --verbose -vvv -R tap ${TESTS}
+
 travis:
 	NODE_ENV=test ${MONGO_SETTINGS} \
-	istanbul cover ${MOCHA} --report lcovonly -- -vvv -R tap ${TESTS}
+	${ISTANBUL} cover ${MOCHA} --report lcovonly -- -vvv -R tap ${TESTS}
