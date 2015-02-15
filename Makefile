@@ -23,11 +23,11 @@ coverage:
 	${ISTANBUL} cover ${MOCHA} -- -R tap ${TESTS}
 
 report:
-	npm install coveralls && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+	test -f ./coverage/lcov.info && (npm install coveralls && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls) || echo "NO COVERAGE"
 
 test:
 	${MONGO_SETTINGS} ${MOCHA} -R tap ${TESTS}
 
 travis:
 	NODE_ENV=test ${MONGO_SETTINGS} \
-	${ISTANBUL} cover ${MOCHA} --report lcovonly -- -vvv -R tap ${TESTS}
+	${ISTANBUL} cover ${MOCHA} --report lcovonly -- -R tap ${TESTS}
