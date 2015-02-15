@@ -7,17 +7,22 @@ MONGO_SETTINGS=MONGO_CONNECTION=${MONGO_CONNECTION} \
 	CUSTOMCONNSTR_mongo_collection=${CUSTOMCONNSTR_mongo_collection} \
 	CUSTOMCONNSTR_mongo_settings_collection=${CUSTOMCONNSTR_mongo_settings_collection}
 
-.PHONY: all coverage test travis
+MOCHA=$(shell which mocha ./node_modules/mocha/bin/_mocha)
+
+.PHONY: all coverage test travis report
 
 all: test
 
 coverage:
 	NODE_ENV=test ${MONGO_SETTINGS} \
-	istanbul cover ./node_modules/mocha/bin/_mocha -- -vvv -R tap ${TESTS}
+	istanbul cover ${MOCHA} -- -vvv -R tap ${TESTS}
 
 test:
-	${MONGO_SETTINGS} mocha --verbose -vvv -R tap ${TESTS}
+	${MONGO_SETTINGS} ${MOCHA} --verbose -vvv -R tap ${TESTS}
+
+report:
+	npm install coveralls && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 
 travis:
 	NODE_ENV=test ${MONGO_SETTINGS} \
-	istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -vvv -R tap ${TESTS}
+	istanbul cover ${MOCHA} --report lcovonly -- -vvv -R tap ${TESTS}
