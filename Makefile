@@ -20,9 +20,9 @@ MONGO_SETTINGS=MONGO_CONNECTION=${MONGO_CONNECTION} \
 # inserted into the default `$PATH` enviroinment, making pointing to
 # the unwrapped mocha executable necessary.
 MOCHA=./node_modules/mocha/bin/_mocha
-ISTANBUL=$(shell which istanbul ./node_modules/.bin/istanbul | head -n 1)
-
-.PHONY: all coverage report test travis
+# Pinned from dependency list.
+ISTANBUL=./node_modules/.bin/istanbul
+ANALYZED=./coverage/lcov.info
 
 all: test
 
@@ -31,7 +31,9 @@ coverage:
 	${ISTANBUL} cover ${MOCHA} -- -R tap ${TESTS}
 
 report:
-	test -f ./coverage/lcov.info && (npm install coveralls && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls) || echo "NO COVERAGE"
+	test -f ${ANALYZED} && \
+    (npm install coveralls && cat ${ANALYZED} | \
+      ./node_modules/.bin/coveralls) || echo "NO COVERAGE"
 
 test:
 	${MONGO_SETTINGS} ${MOCHA} -R tap ${TESTS}
@@ -39,3 +41,5 @@ test:
 travis:
 	NODE_ENV=test ${MONGO_SETTINGS} \
 	${ISTANBUL} cover ${MOCHA} --report lcovonly -- -R tap ${TESTS}
+
+.PHONY: all coverage report test travis
