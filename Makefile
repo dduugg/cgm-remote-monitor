@@ -16,6 +16,9 @@ MONGO_SETTINGS=MONGO_CONNECTION=${MONGO_CONNECTION} \
 # coverage reporter's ability to instrument the tests correctly.
 # Hard coding it to the local with our pinned version is bigger for
 # initial installs, but ensures a consistent environment everywhere.
+# On Travis, ./node_modules/.bin and other `nvm` and `npm` bundles are
+# inserted into the default `$PATH` enviroinment, making pointing to
+# the unwrapped mocha executable necessary.
 MOCHA=./node_modules/mocha/bin/_mocha
 ISTANBUL=$(shell which istanbul ./node_modules/.bin/istanbul | head -n 1)
 
