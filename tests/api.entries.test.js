@@ -1,10 +1,10 @@
-
 var request = require('supertest');
 var should = require('should');
 var load = require('./fixtures/load');
 
 describe('Entries REST api', function ( ) {
   var entries = require('../lib/api/entries/');
+
   before(function (done) {
     var env = require('../env')( );
     this.wares = require('../lib/middleware/')(env);
@@ -18,14 +18,15 @@ describe('Entries REST api', function ( ) {
       self.archive.create(load('json'), done);
     });
   });
+
   after(function (done) {
     this.archive( ).remove({ }, done);
   });
 
   it('should be a module', function ( ) {
     entries.should.be.ok;
-
   });
+
   it('/entries.json', function (done) {
     request(this.app)
       .get('/entries.json')
@@ -37,12 +38,23 @@ describe('Entries REST api', function ( ) {
       });
   });
 
-  it('/entries.json', function (done) {
+  it('/entries.json 2', function (done) {
+    request(this.app)
+      .get('/entries.json')
+      .expect(200)
+      .end(function (err, res)  {
+        console.log('body', res.body);
+        res.body.length.should.equal(10);
+        done( );
+      });
+  });
+
+  it('/entries.json?count=30', function (done) {
     request(this.app)
       .get('/entries.json?count=30')
       .expect(200)
       .end(function (err, res)  {
-        console.log('body', res.body);
+        // console.log('body', res.body);
         res.body.length.should.equal(30);
         done( );
       });
@@ -60,20 +72,16 @@ describe('Entries REST api', function ( ) {
   });
 
   it('/entries/preview', function (done) {
-
-      request(this.app)
-        .post('/entries/preview.json')
-        .send(load('json'))
-        .expect(201)
-        .end(function (err, res)  {
-          // console.log(res.body);
-          res.body.length.should.equal(30);
-          done( );
-          // console.log('err', err, 'res', res);
-        })
-    ;
-
+    request(this.app)
+      .post('/entries/preview.json')
+      .send(load('json'))
+      .expect(201)
+      .end(function (err, res)  {
+        // console.log(res.body);
+        res.body.length.should.equal(30);
+        done( );
+        // console.log('err', err, 'res', res);
+    });
   });
-
 });
 
