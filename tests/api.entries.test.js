@@ -31,7 +31,7 @@ describe('Entries REST api', function ( ) {
       .get('/entries.json')
       .expect(200)
       .end(function (err, res)  {
-        // console.log('body', res.body);
+        console.log('body', res.body);
         res.body.length.should.equal(10);
         done( );
       });
@@ -42,7 +42,7 @@ describe('Entries REST api', function ( ) {
       .get('/entries.json?count=30')
       .expect(200)
       .end(function (err, res)  {
-        // console.log('body', res.body);
+        console.log('body', res.body);
         res.body.length.should.equal(30);
         done( );
       });
