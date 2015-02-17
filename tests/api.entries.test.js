@@ -57,7 +57,6 @@ describe('Entries REST api', function ( ) {
         done( );
         // console.log('err', err, 'res', res);
       });
-
   });
 
   it('/entries/preview', function (done) {
