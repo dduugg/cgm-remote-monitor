@@ -40,7 +40,7 @@ function populate_collection( db ) {
 
     var new_cgm_record = get_cgm_record();
 
-    cgm_collection.insert( new_cgm_record, function(err,created) {
+    cgm_collection.insertOne( new_cgm_record, function(err,created) {
 
 	// TODO: Error checking
 	process.exit( 0 );
