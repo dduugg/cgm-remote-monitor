@@ -26,6 +26,40 @@ describe('Entries REST api', function ( ) {
     entries.should.be.ok;
 
   });
+
+  it('/entries.json?count=30', function (done) {
+    request(this.app)
+      .get('/entries.json?count=30')
+      .expect(200)
+      .end(function (err, res)  {
+        // console.log('body', res.body);
+        res.body.length.should.equal(30);
+        done( );
+      });
+  });
+
+  it('/entries.json?count=30 2', function (done) {
+    request(this.app)
+      .get('/entries.json?count=30')
+      .expect(200)
+      .end(function (err, res)  {
+        // console.log('body', res.body);
+        res.body.length.should.equal(30);
+        done( );
+      });
+  });
+
+  it('/entries.json?count=30 3', function (done) {
+    request(this.app)
+      .get('/entries.json?count=30')
+      .expect(200)
+      .end(function (err, res)  {
+        // console.log('body', res.body);
+        res.body.length.should.equal(30);
+        done( );
+      });
+  });
+
   it('/entries.json', function (done) {
     request(this.app)
       .get('/entries.json')
@@ -37,13 +71,24 @@ describe('Entries REST api', function ( ) {
       });
   });
 
-  it('/entries.json', function (done) {
+  it('/entries.json 2', function (done) {
     request(this.app)
-      .get('/entries.json?count=30')
+      .get('/entries.json')
       .expect(200)
       .end(function (err, res)  {
         // console.log('body', res.body);
-        res.body.length.should.equal(30);
+        res.body.length.should.equal(10);
+        done( );
+      });
+  });
+
+  it('/entries.json 3', function (done) {
+    request(this.app)
+      .get('/entries.json')
+      .expect(200)
+      .end(function (err, res)  {
+        // console.log('body', res.body);
+        res.body.length.should.equal(10);
         done( );
       });
   });
