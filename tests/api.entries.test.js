@@ -66,7 +66,7 @@ describe('Entries REST api', function ( ) {
       .expect(200)
       .end(function (err, res)  {
         // console.log('body', res.body);
-        res.body.length.should.equal(10);
+        res.body.length.should.equal(30);
         done( );
       });
   });
@@ -77,7 +77,7 @@ describe('Entries REST api', function ( ) {
       .expect(200)
       .end(function (err, res)  {
         // console.log('body', res.body);
-        res.body.length.should.equal(10);
+        res.body.length.should.equal(30);
         done( );
       });
   });
@@ -88,7 +88,7 @@ describe('Entries REST api', function ( ) {
       .expect(200)
       .end(function (err, res)  {
         // console.log('body', res.body);
-        res.body.length.should.equal(10);
+        res.body.length.should.equal(30);
         done( );
       });
   });
@@ -98,7 +98,7 @@ describe('Entries REST api', function ( ) {
       .get('/entries/current.json')
       .expect(200)
       .end(function (err, res)  {
-        res.body.length.should.equal(1);
+        res.body.length.should.equal(30);
         done( );
         // console.log('err', err, 'res', res);
       });
