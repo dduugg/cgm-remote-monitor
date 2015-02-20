@@ -27,24 +27,30 @@ describe('Entries REST api', function ( ) {
     entries.should.be.ok;
   });
 
-  it('/entries.json', function (done) {
+  // keep this test pinned at or near the top in order to validate all
+  // entries successfully uploaded. if res.body.length is short of the
+  // expected value, it may indicate a regression in the create
+  // function callback logic in entries.js.
+  it('gets requested number of entries', function (done) {
+    var count = 30;
+    request(this.app)
+      .get('/entries.json?count=' + count)
+      .expect(200)
+      .end(function (err, res) {
+        // console.log('body', res.body);
+        res.body.length.should.equal(count);
+        done( );
+      });
+  });
+
+  it('gets default number of entries', function (done) {
+    var defaultCount = 10;
     request(this.app)
       .get('/entries.json')
       .expect(200)
       .end(function (err, res) {
         // console.log('body', res.body);
-        res.body.length.should.equal(10);
-        done( );
-      });
-  });
-
-  it('/entries.json?count=30', function (done) {
-    request(this.app)
-      .get('/entries.json?count=30')
-      .expect(200)
-      .end(function (err, res) {
-        // console.log('body', res.body);
-        res.body.length.should.equal(30);
+        res.body.length.should.equal(defaultCount);
         done( );
       });
   });
